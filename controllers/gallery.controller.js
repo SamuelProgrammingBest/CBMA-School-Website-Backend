@@ -95,7 +95,7 @@ const updateGalleryImage = async (req, res) => {
         returnDocument: "after",
         runValidators: true,
       },
-    });
+    );
   } catch (error) {
     console.log(error);
     res
