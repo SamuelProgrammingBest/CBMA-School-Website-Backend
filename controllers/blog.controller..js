@@ -65,6 +65,21 @@ const getBlog = async (req, res) => {
   }
 };
 
+const getBlogbyId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const blogs = await blog.findById(id);
+
+    return res.status(200).send({
+      message: "Blog Post Gotten Successfully",
+      data: blogs,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ message: `Blog not gotten and error = ${error}` });
+  }
+};
+
 const updateBlog = async (req, res) => {
   try {
     const { id } = req.params;
@@ -143,4 +158,4 @@ const deleteBlog = async (req, res) => {
   }
 };
 
-module.exports = { createBlog, getBlogs, updateBlog, deleteBlog, getBlog };
+module.exports = { createBlog, getBlogs, updateBlog, deleteBlog, getBlog, getBlogbyId };
