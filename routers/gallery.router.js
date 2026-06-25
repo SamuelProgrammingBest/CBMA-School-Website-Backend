@@ -7,6 +7,7 @@ const router = express.Router()
 
 router.post("/create-image", verifyFunc, upload.single("image"), createGalleryImage)
 router.get("/get-images", verifyFunc, getGalleryImages)
+router.get("/get-images-client", getGalleryImages)
 router.patch("/update-image/:id", verifyFunc, upload.single("image"), updateGalleryImage)
 router.delete("/delete-image/:id", verifyFunc, deleteGalleryImage)
 
