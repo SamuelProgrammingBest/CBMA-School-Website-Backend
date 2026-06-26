@@ -97,7 +97,7 @@ const replyEnquiry = async (req, res) => {
     const enquiryInfo = await enquiries.findById(id);
 
     const mailInfo = {
-      from:'"Cornerstone Baptist Model Academy" adewalesamuel835@gmail.com',
+      from:'"Cornerstone Baptist Model Academy" <adewalesamuel835@gmail.com>',
       to:enquiryInfo.email,
       text:reply,
     }
