@@ -55,6 +55,24 @@ const getGalleryImages = async (req, res) => {
   }
 };
 
+
+const getGalleryImage = async (req, res) => {
+  try {
+    const {id} = req.params
+    const galleryImg = await gallery.findbyId(id);
+
+    return res.status(200).send({
+      message: "Gallery Image Gotten Successfully",
+      data: galleryImg,
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(400)
+      .send({ message: `Gallery image not created and error = ${error}` });
+  }
+};
+
 const updateGalleryImage = async (req, res) => {
   try {
     const { id } = req.params;
@@ -144,6 +162,7 @@ const deleteGalleryImage = async (req, res) => {
 module.exports = {
   createGalleryImage,
   getGalleryImages,
+  getGalleryImage,
   updateGalleryImage,
   deleteGalleryImage,
 };
