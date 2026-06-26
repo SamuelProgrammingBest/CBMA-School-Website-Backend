@@ -4,7 +4,7 @@ const { verifyFunc } = require("../protected/verify")
 
 const router = express.Router()
 
-router.post("/create-enquiry", verifyFunc, createEnquiries)
+router.post("/create-enquiry", createEnquiries)
 router.get("/get-enquiries", verifyFunc, getEnquiries)
 router.get("/get-enquiry/:id", verifyFunc, getEnquiry)
 router.patch("/isRead/:id", verifyFunc, updateisRead)

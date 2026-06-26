@@ -1,3 +1,5 @@
+import dns from 'node:dns';
+dns.setDefaultResultOrder('ipv4first'); 
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors")
