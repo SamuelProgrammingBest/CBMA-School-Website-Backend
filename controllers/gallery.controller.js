@@ -59,7 +59,7 @@ const getGalleryImages = async (req, res) => {
 const getGalleryImage = async (req, res) => {
   try {
     const {id} = req.params
-    const galleryImg = await gallery.findbyId(id);
+    const galleryImg = await gallery.findById(id);
 
     return res.status(200).send({
       message: "Gallery Image Gotten Successfully",
