@@ -93,15 +93,13 @@ const deleteEnquiry = async (req, res) => {
 const replyEnquiry = async (req, res) => {
   try {
     const { id } = req.params;
-    const {subject, reply} = req.body
+    const {reply} = req.body
     const enquiryInfo = await enquiries.findById(id);
 
     const mailInfo = {
       from:'"Cornerstone Baptist Model Academy" adewalesamuel835@gmail.com',
       to:enquiryInfo.email,
-      subject,
       text:reply,
-      html:'<h1>Yeahhhhhhh😁😁😁</h1>'
     }
 
     const info = await transporter.sendMail(mailInfo)
