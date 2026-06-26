@@ -101,7 +101,7 @@ const updateGalleryImage = async (req, res) => {
       }
 
       // 4. Merge new image info into what we're updating
-      updateData.coverImage = result.secure_url;
+      updateData.image = result.secure_url;
       updateData.publicId = result.public_id;
     }
 
