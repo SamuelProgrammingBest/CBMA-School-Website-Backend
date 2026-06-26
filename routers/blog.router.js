@@ -1,5 +1,5 @@
 const express = require("express")
-const { createBlog, getBlogs, updateBlog, deleteBlog, getBlog } = require("../controllers/blog.controller.")
+const { createBlog, getBlogs, updateBlog, deleteBlog, getBlog, getBlogbyId } = require("../controllers/blog.controller.")
 const { verifyFunc } = require("../protected/verify")
 const upload = require("../middleware/upload")
 
