@@ -1,5 +1,5 @@
 const express = require("express")
-const { createGalleryImage, getGalleryImages, updateGalleryImage, deleteGalleryImage } = require("../controllers/gallery.controller")
+const { createGalleryImage, getGalleryImages, updateGalleryImage, deleteGalleryImage, getGalleryImage, } = require("../controllers/gallery.controller")
 const { verifyFunc } = require("../protected/verify")
 const upload = require("../middleware/upload")
 
@@ -8,7 +8,7 @@ const router = express.Router()
 router.post("/create-image", verifyFunc, upload.single("image"), createGalleryImage)
 router.get("/get-images", verifyFunc, getGalleryImages)
 router.get("/get-images-client", getGalleryImages)
-router.get("/get-image/:id", verifyFunc, getGalleryImages)
+router.get("/get-image/:id", verifyFunc, getGalleryImage)
 router.patch("/update-image/:id", verifyFunc, upload.single("image"), updateGalleryImage)
 router.delete("/delete-image/:id", verifyFunc, deleteGalleryImage)
 
