@@ -109,7 +109,7 @@ const updateGalleryImage = async (req, res) => {
       returnDocument: "after",
       runValidators: true,
     });
-    
+
     return res.status(200).send({
       message: "Gallery Image Updated Successfully",
       data: updatedImage,
@@ -128,7 +128,7 @@ const deleteGalleryImage = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const existingImage = await blog.findById(id);
+    const existingImage = await gallery.findById(id);
     if (!existingImage) {
       return res.status(404).send({ message: "Image not found" });
     }
