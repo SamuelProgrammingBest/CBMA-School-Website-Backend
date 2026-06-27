@@ -106,7 +106,7 @@ const replyEnquiry = async (req, res) => {
     const { data, error } = await resend.emails.send({
       from: "Cornerstone Baptist Model Academy <onboarding@resend.dev>",
       subject:"Reply to your Enquiry",
-      to: enquiryInfo.email,
+      to: enquiryInfo.email ? "adewalesamuel835@gmail.com" : "",
       text: reply,
     });
 
