@@ -122,10 +122,10 @@ const replyEnquiry = async (req, res) => {
 
     return res.status(200).send({
       message: "Reply Sent Successfully",
-      data: {
-        id,
-        messageId: data.id,
-      },
+      // data: {
+      //   id,
+      //   messageId: data.id,
+      // },
     });
   } catch (error) {
     console.log(error);
