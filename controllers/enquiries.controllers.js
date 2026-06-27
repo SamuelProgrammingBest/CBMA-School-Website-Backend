@@ -99,16 +99,20 @@ const replyEnquiry = async (req, res) => {
     const { reply } = req.body;
     const enquiryInfo = await enquiries.findById(id);
 
-    const { data, error } = resend.emails.send({
+    if (!enquiryInfo) {
+      return res.status(404).send({ message: "Enquiry not found" });
+    }
+
+    const { data, error } = await resend.emails.send({
       from: "Cornerstone Baptist Model Academy <onboarding@resend.dev>",
       to: enquiryInfo.email,
       text: reply,
     });
 
-    if(error) {
+    if (error) {
       return res.status(401).send({
-        message:"Reply not sent successfully"
-      })
+        message: "Reply not sent successfully",
+      });
     }
 
     await enquiries.findByIdAndUpdate(
@@ -117,8 +121,8 @@ const replyEnquiry = async (req, res) => {
       {
         returnDocument: "after",
         runValidators: true,
-      }
-    )
+      },
+    );
 
     return res.status(200).send({
       message: "Reply Sent Successfully",
