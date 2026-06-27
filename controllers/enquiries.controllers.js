@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const enquiries = require("../models/enquiries.model");
 const transporter = require("../transporter/transporter");
+const resend = require("../transporter/transporter");
 
 const createEnquiries = async (req, res) => {
   try {
@@ -86,38 +87,59 @@ const deleteEnquiry = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ message: `Enquiry not deleted and error = ${error}` });
+    res
+      .status(400)
+      .send({ message: `Enquiry not deleted and error = ${error}` });
   }
 };
 
 const replyEnquiry = async (req, res) => {
   try {
     const { id } = req.params;
-    const {reply} = req.body
+    const { reply } = req.body;
     const enquiryInfo = await enquiries.findById(id);
 
-    const mailInfo = {
-      from:'"Cornerstone Baptist Model Academy" <adewalesamuel835@gmail.com>',
-      to:enquiryInfo.email,
-      text:reply,
+    const { data, error } = resend.emails.send({
+      from: "Cornerstone Baptist Model Academy <onboarding@resend.dev>",
+      to: enquiryInfo.email,
+      text: reply,
+    });
+
+    if(error) {
+      return res.status(401).send({
+        message:"Reply not sent successfully"
+      })
     }
 
-    const info = await transporter.sendMail(mailInfo)
-
+    await enquiries.findByIdAndUpdate(
+      id,
+      { replied: true },
+      {
+        returnDocument: "after",
+        runValidators: true,
+      }
+    )
 
     return res.status(200).send({
       message: "Reply Sent Successfully",
       data: {
         id,
-        messageId: info.messageId
+        messageId: data.messageId,
       },
     });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ message: `Enquiry not replied and error = ${error}` });
+    res
+      .status(400)
+      .send({ message: `Enquiry not replied and error = ${error}` });
   }
 };
 
-
-
-module.exports = { createEnquiries, getEnquiries, getEnquiry, updateisRead, deleteEnquiry, replyEnquiry };
+module.exports = {
+  createEnquiries,
+  getEnquiries,
+  getEnquiry,
+  updateisRead,
+  deleteEnquiry,
+  replyEnquiry,
+};

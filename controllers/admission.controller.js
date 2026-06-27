@@ -4,20 +4,27 @@ const admission = require("../models/admission.model");
 
 const admissionApply = async (req, res) => {
   try {
-    await admission.create({ ...req.body });
+    const admit = await admission.create({ ...req.body });
 
-    const mailInfo = {
-      from: '"Cornerstone Baptist Model Academy" adewalesamuel835@gmail.com',
-      to: enquiryInfo.email,
-      subject:"Admssion Confirmation",
-      text: `Good day our esteemed potential parent. Your admission application for ${req.body.studentName} has been received.`,
-      html: "<h1>Yeahhhhhhh😁😁😁</h1>",
-    };
+    const { data, error } = resend.emails.send({
+      from: "Cornerstone Baptist Model Academy <onboarding@resend.dev>",
+      to: admit.parentEmail,
+      text: `
+      You have successfully submitted your application for ${admit.studentName}
+      `,
+    });
 
-    const info = await transporter.sendMail(mailInfo);
+    if (error) {
+      return res.status(401).send({
+        message: "Reply not sent successfully",
+      });
+    }
 
     return res.status(200).send({
       message: "Admission Application Sent Successfully",
+      data:{
+        messageId:data.id
+      }
     });
   } catch (error) {
     console.log(error);
@@ -41,4 +48,4 @@ const getAdmissions = async (req, res) => {
   }
 };
 
-module.exports = {admissionApply, getAdmissions}
+module.exports = { admissionApply, getAdmissions };

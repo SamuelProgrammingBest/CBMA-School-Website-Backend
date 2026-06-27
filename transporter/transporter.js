@@ -1,13 +1,5 @@
-const nodemailer = require("nodemailer")
+const { Resend } = require("resend")
 
-const transporter = nodemailer.createTransport({
-    service:"gmail",
-    family:4,
-    auth:{
-        user:process.env.EMAIL_ACC,
-        pass:process.env.EMAIL_APP_PASS
-    }
-})
+const resend = new Resend(process.env.RESEND_API_KEY)
 
-
-module.exports = transporter
+module.exports = resend
