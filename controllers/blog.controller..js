@@ -53,7 +53,7 @@ const getBlogs = async (req, res) => {
 const getBlog = async (req, res) => {
   try {
     const { slug } = req.params;
-    const blogs = await blog.find({ slug });
+    const blogs = await blog.find({ slug, isPublished:true });
 
     return res.status(200).send({
       message: "Blog Post Gotten Successfully",
