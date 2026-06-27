@@ -124,7 +124,7 @@ const replyEnquiry = async (req, res) => {
       message: "Reply Sent Successfully",
       data: {
         id,
-        messageId: data.messageId,
+        messageId: data.id,
       },
     });
   } catch (error) {
