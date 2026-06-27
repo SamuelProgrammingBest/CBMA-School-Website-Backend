@@ -34,7 +34,7 @@ const createGalleryImage = async (req, res) => {
   } catch (error) {
     console.log(error);
     res
-      .status(401)
+      .status(400)
       .send({ message: `Gallery image not created and error = ${error}` });
   }
 };
