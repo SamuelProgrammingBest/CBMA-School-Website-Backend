@@ -110,7 +110,7 @@ const replyEnquiry = async (req, res) => {
     });
 
     if (error) {
-      return res.status(401).send({
+      return res.status(400).send({
         message: `Reply not sent successfully and error: ${error}`,
       });
     }
