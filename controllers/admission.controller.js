@@ -1,38 +1,46 @@
 const mongoose = require("mongoose");
+const cloudinary = require("../config/cloudinary")
 
 const admission = require("../models/admission.model");
 
 const admissionApply = async (req, res) => {
   try {
-    const admit = await admission.create({ ...req.body });
+    const files = req.files
 
-    const { data, error } = resend.emails.send({
-      from: "Cornerstone Baptist Model Academy <onboarding@resend.dev>",
-      to: admit.parentEmail,
-      text: `
-      You have successfully submitted your application for ${admit.studentName}
-      `,
-    });
-
-    if (error) {
-      return res.status(401).send({
-        message: "Reply not sent successfully",
-      });
+    if (!files?.childPhoto || !files?.parentPhoto) {
+      return res.status(400).send({ message: "All two photos are required" })
     }
 
+    const uploadToCloudinary = async (file) => {
+      const base64 = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`
+      return cloudinary.uploader.upload(base64, { folder: "cbma/admissions" })
+    }
+
+    const [childResult, parentResult, assigneeResult] = await Promise.all([
+      uploadToCloudinary(files.childPhoto[0]),
+      uploadToCloudinary(files.parentPhoto[0]),
+      uploadToCloudinary(files.assigneePhoto[0]),
+    ])
+
+    const newApplication = await admission.create({
+      ...req.body,
+      childPhoto: childResult.secure_url,
+      childPhotoPublicId: childResult.public_id,
+      parentPhoto: parentResult.secure_url,
+      parentPhotoPublicId: parentResult.public_id,
+      assigneePhoto: assigneeResult.secure_url,
+      assigneePhotoPublicId: assigneeResult.public_id,
+    })
+
     return res.status(200).send({
-      message: "Admission Application Sent Successfully",
-      data:{
-        messageId:data.id
-      }
-    });
+      message: "Application Submitted Successfully",
+      data: newApplication,
+    })
   } catch (error) {
-    console.log(error);
-    res
-      .status(400)
-      .send({ message: `Admission not created and error = ${error}` });
+    console.log(error)
+    res.status(400).send({ message: `Application not submitted and error = ${error}` })
   }
-};
+}
 
 const getAdmissions = async (req, res) => {
   try {
