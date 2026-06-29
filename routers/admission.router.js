@@ -2,6 +2,8 @@ const express = require("express");
 const {
   admissionApply,
   getAdmissions,
+  getAdmission,
+  updateAdmissionStatus,
 } = require("../controllers/admission.controller");
 const { verifyFunc } = require("../protected/verify");
 const upload = require("../middleware/upload");
