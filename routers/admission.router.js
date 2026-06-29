@@ -20,5 +20,7 @@ router.post(
   admissionApply,
 );
 router.get("/get-applications", verifyFunc, getAdmissions);
+router.get("/get-application/:id", verifyFunc, getAdmission)
+router.patch("/update-application-status/:id", verifyFunc, updateAdmissionStatus)
 
 module.exports = router;

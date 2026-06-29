@@ -56,4 +56,55 @@ const getAdmissions = async (req, res) => {
   }
 };
 
-module.exports = { admissionApply, getAdmissions };
+const getAdmission = async (req, res) => {
+  try {
+    const { id } = req.params
+    const applicationInfo = await admission.findById(id)
+
+    if (!applicationInfo) {
+      return res.status(404).send({ message: "Application not found" })
+    }
+
+    return res.status(200).send({
+      message: "Application Retrieved Successfully",
+      data: applicationInfo,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({ message: `Application not retrieved and error = ${error}` })
+  }
+}
+
+const updateAdmissionStatus = async (req, res) => {
+  try {
+    const { id } = req.params
+    const { status, admissionNo, designation } = req.body
+
+    const updateData = { status, designation }
+    if (status === "admitted" || status === "rejected") {
+      updateData.decisionDate = new Date()
+    }
+    if (status === "admitted") {
+      updateData.admissionNo = admissionNo
+    }
+
+    const updatedApplication = await admission.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    })
+
+    if (!updatedApplication) {
+      return res.status(404).send({ message: "Application not found" })
+    }
+
+    return res.status(200).send({
+      message: "Application Updated Successfully",
+      data: updatedApplication,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({ message: `Application not updated and error = ${error}` })
+  }
+}
+
+module.exports = { admissionApply, getAdmissions, getAdmission, updateAdmissionStatus };
