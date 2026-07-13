@@ -93,61 +93,60 @@ const deleteEnquiry = async (req, res) => {
   }
 };
 
-const replyEnquiry = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { reply } = req.body;
-    const enquiryInfo = await enquiries.findById(id);
+// const replyEnquiry = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { reply } = req.body;
+//     const enquiryInfo = await enquiries.findById(id);
 
-    if (!enquiryInfo) {
-      return res.status(404).send({ message: "Enquiry not found" });
-    }
+//     if (!enquiryInfo) {
+//       return res.status(404).send({ message: "Enquiry not found" });
+//     }
 
-    const { data, error } = await resend.emails.send({
-      from: "Cornerstone Baptist Model Academy <onboarding@resend.dev>",
-      subject:"Reply to your Enquiry",
-      to: enquiryInfo.email ? "adewalesamuel835@gmail.com" : "",
-      text: reply,
-    });
+//     const { data, error } = await resend.emails.send({
+//       from: "Cornerstone Baptist Model Academy <onboarding@resend.dev>",
+//       subject:"Reply to your Enquiry",
+//       to: enquiryInfo.email ? "adewalesamuel835@gmail.com" : "",
+//       text: reply,
+//     });
 
-    if (error) {
-      return res.status(400).send({
-        message: `Reply not sent successfully and error: ${error.name}
-        ${error.statusCode}
-        ${error.message}
-        `,
-      });
-    }
+//     if (error) {
+//       return res.status(400).send({
+//         message: `Reply not sent successfully and error: ${error.name}
+//         ${error.statusCode}
+//         ${error.message}
+//         `,
+//       });
+//     }
 
-    await enquiries.findByIdAndUpdate(
-      id,
-      { replied: true },
-      {
-        returnDocument: "after",
-        runValidators: true,
-      },
-    );
+//     await enquiries.findByIdAndUpdate(
+//       id,
+//       { replied: true },
+//       {
+//         returnDocument: "after",
+//         runValidators: true,
+//       },
+//     );
 
-    return res.status(200).send({
-      message: "Reply Sent Successfully",
-      // data: {
-      //   id,
-      //   messageId: data.id,
-      // },
-    });
-  } catch (error) {
-    console.log(error);
-    res
-      .status(400)
-      .send({ message: `Enquiry not replied and error = ${error}` });
-  }
-};
+//     return res.status(200).send({
+//       message: "Reply Sent Successfully",
+//       // data: {
+//       //   id,
+//       //   messageId: data.id,
+//       // },
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res
+//       .status(400)
+//       .send({ message: `Enquiry not replied and error = ${error}` });
+//   }
+// };
 
 module.exports = {
   createEnquiries,
   getEnquiries,
   getEnquiry,
   updateisRead,
-  deleteEnquiry,
-  replyEnquiry,
+  deleteEnquiry
 };

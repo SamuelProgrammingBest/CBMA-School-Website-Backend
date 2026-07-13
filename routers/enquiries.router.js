@@ -9,5 +9,5 @@ router.get("/get-enquiries", verifyFunc, getEnquiries)
 router.get("/get-enquiry/:id", verifyFunc, getEnquiry)
 router.patch("/isRead/:id", verifyFunc, updateisRead)
 router.delete("/delete-enquiry/:id", verifyFunc, deleteEnquiry)
-router.post("/reply-enquiry/:id", verifyFunc, replyEnquiry)
+// router.post("/reply-enquiry/:id", verifyFunc, replyEnquiry)
 module.exports = router
