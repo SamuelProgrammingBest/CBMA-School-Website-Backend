@@ -41,7 +41,7 @@ const createGalleryImage = async (req, res) => {
 
 const getGalleryImages = async (req, res) => {
   try {
-    const galleryImgs = await gallery.find();
+    const galleryImgs = await gallery.find().sort("-createdAt");
 
     return res.status(200).send({
       message: "Blog Posts Gotten Successfully",
